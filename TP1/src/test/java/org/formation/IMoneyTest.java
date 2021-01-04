@@ -102,7 +102,7 @@ public class IMoneyTest {
     }
     @Test
     public void addEmptyMoneyBagWithMoneyShouldReturnMoney() {
-        IMoney result = mbVide.add(eur12);
+        IMoney result = eur12.add(mbVide);
         assertAll("addEmptyMoneyBagWithMoneyShouldReturnMoney",
                 () -> assertTrue( result instanceof Money),
                 () -> assertEquals("EUR",((Money)result).getCurrency()),

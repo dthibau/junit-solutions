@@ -34,8 +34,20 @@ public class Money implements IMoney {
 		return false;
 	}
 
-	@Override
-	public IMoney add(IMoney money) {
-		return new Money(0, "EUR");
-	}
+    @Override
+    public IMoney add(IMoney imoney) {
+       if ( imoney instanceof Money ) {
+           Money m = (Money)imoney;
+           if ( m.getCurrency().equals(getCurrency()) ) {
+               return new Money(getAmount()+m.getAmount(),getCurrency());
+           } else {
+               MoneyBag mb = new MoneyBag();
+               mb.put(this);
+               mb.put(m);
+               return mb;
+           }
+       }
+       return imoney.add(this);
+    }
+
 }
