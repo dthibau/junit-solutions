@@ -10,24 +10,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
-public class IMoneyTest {
+public class IMoneyTest extends BaseTest {
 
-    private Money eur12,eur14,yen12;
-    private MoneyBag mbVide, mb12Eur, mbb14Eur12Yen;
-
-    @BeforeEach
-    public void setUp() throws Exception {
-        eur12 = new Money(12,"EUR");
-        eur14 = new Money(14,"EUR");
-        yen12 = new Money(12,"YEN");
-        mbVide = new MoneyBag();
-        mb12Eur = new MoneyBag();
-        mb12Eur.put(eur12);
-
-        mbb14Eur12Yen = new MoneyBag();
-        mbb14Eur12Yen.put(eur14);
-        mbb14Eur12Yen.put(yen12);
-    }
 
     @Test
     public void add2MoneyWithSameCurrency() {
