@@ -7,6 +7,15 @@ public class MoneyBag implements IMoney {
 
     private Map<String,Money> moneys = new HashMap<>();
 
+    private ConvertService convertService;
+
+    public ConvertService getConvertService() {
+        return convertService;
+    }
+
+    public void setConvertService(ConvertService convertService) {
+        this.convertService = convertService;
+    }
 
     public void put(Money money) {
         moneys.put(money.getCurrency(),money);
@@ -52,5 +61,14 @@ public class MoneyBag implements IMoney {
       }
       throw new IllegalArgumentException("Not implemented");
 
+    }
+
+    public Money convertInto(String destinationCurrency) {
+
+        double result = getCurrencies().stream()
+                .map(currency -> convertService.convert(moneys.get(currency).getAmount(), currency, destinationCurrency))
+                .reduce(0d, (a, b) -> a + b);
+
+        return new Money(result,destinationCurrency);
     }
 }

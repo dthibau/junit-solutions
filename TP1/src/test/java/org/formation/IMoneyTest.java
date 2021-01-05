@@ -36,7 +36,7 @@ public class IMoneyTest {
         assertThat("Add 2 Money of same Currency is just a Money",result, instanceOf(Money.class));
         assertThat("Add 2 Money of same Currency, currency is unchanged and the amount is the sum of the 2 amounts",
                 ((Money)result), allOf(hasProperty("currency", equalTo("EUR")),
-                        hasProperty("amount",equalTo(26))));
+                        hasProperty("amount",equalTo(26.0))));
 
     }
 
@@ -47,7 +47,7 @@ public class IMoneyTest {
         assertThat("Add 2 Money of different Currencies lead to a MoneyBag",result, instanceOf(MoneyBag.class));
         assertThat("Add 2 Money of different Currencies lead to a MoneyBag with only the 2 currencies",
                 ((MoneyBag)result).getCurrencies(), containsInAnyOrder("EUR","YEN"));
-        assertThat(((MoneyBag)result), allOf(EUR(is(14)),YEN(is(12))));
+        assertThat(((MoneyBag)result), allOf(EUR(is(14.0)),YEN(is(12.0))));
 
 
     }
@@ -123,22 +123,22 @@ public class IMoneyTest {
     }
 
     public static Matcher<MoneyBag> EUR(Matcher<? super
-            Integer> matcher) {
-        return new FeatureMatcher<MoneyBag, Integer>(matcher,
+            Double> matcher) {
+        return new FeatureMatcher<MoneyBag, Double>(matcher,
                 "a MoneyBag with x Euros", "EUR") {
             @Override
-            protected Integer featureValueOf(MoneyBag actual) {
+            protected Double featureValueOf(MoneyBag actual) {
                 return actual.getCurrencyAmount("EUR");
             }
         };
     }
 
     public static Matcher<MoneyBag> YEN(Matcher<? super
-            Integer> matcher) {
-        return new FeatureMatcher<MoneyBag, Integer>(matcher,
+            Double> matcher) {
+        return new FeatureMatcher<MoneyBag, Double>(matcher,
                 "a MoneyBag with x Yens", "YEN") {
             @Override
-            protected Integer featureValueOf(MoneyBag actual) {
+            protected Double featureValueOf(MoneyBag actual) {
                 return actual.getCurrencyAmount("YEN");
             }
         };
