@@ -40,6 +40,7 @@ public class MoneyBagTest extends BaseTest {
                 result, allOf(hasProperty("currency", equalTo("EUR")),
                         hasProperty("amount",equalTo(0.0))));
 
+        verifyNoInteractions(convertService);
     }
 
     @Test
@@ -51,6 +52,9 @@ public class MoneyBagTest extends BaseTest {
         assertThat("Conversion of a MoneyBag with only one currency",
                 result, allOf(hasProperty("currency", equalTo("YEN")),
                         hasProperty("amount",equalTo(20.5))));
+        verify(convertService, times(1)).convert(12,"EUR","YEN");
+        verifyNoMoreInteractions(convertService);
+
     }
 
     @Test
@@ -62,5 +66,8 @@ public class MoneyBagTest extends BaseTest {
         assertThat("Conversion of a MoneyBag with only one currency",
                 result, allOf(hasProperty("currency", equalTo("YEN")),
                         hasProperty("amount",equalTo(32.5))));
+
+        verify(convertService, times(1)).convert(14,"EUR","YEN");
+        verifyNoMoreInteractions(convertService);
     }
 }
