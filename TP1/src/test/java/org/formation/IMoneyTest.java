@@ -1,7 +1,11 @@
 package org.formation;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 
+import org.hamcrest.FeatureMatcher;
+import org.hamcrest.Matcher;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -28,21 +32,24 @@ public class IMoneyTest {
     @Test
     public void add2MoneyWithSameCurrency() {
         IMoney result = eur12.add(eur14);
-        assertAll("Add2MoneyWithSameCurrency",
-                () -> assertTrue( result instanceof Money),
-                () -> assertEquals("EUR",((Money)result).getCurrency()),
-                () -> assertEquals(26, ((Money)result).getAmount())
-        );
+
+        assertThat("Add 2 Money of same Currency is just a Money",result, instanceOf(Money.class));
+        assertThat("Add 2 Money of same Currency, currency is unchanged and the amount is the sum of the 2 amounts",
+                ((Money)result), allOf(hasProperty("currency", equalTo("EUR")),
+                        hasProperty("amount",equalTo(26))));
+
     }
 
     @Test
     public void add2MoneyWithDifferentCurrency() {
         IMoney result = eur14.add(yen12);
-        assertAll("Add2MoneyWithDifferentCurrency",
-                () -> assertTrue( result instanceof MoneyBag),
-                () -> assertEquals(14,((MoneyBag)result).getCurrencyAmount("EUR")),
-                () -> assertEquals(12, ((MoneyBag)result).getCurrencyAmount("YEN"))
-        );
+
+        assertThat("Add 2 Money of different Currencies lead to a MoneyBag",result, instanceOf(MoneyBag.class));
+        assertThat("Add 2 Money of different Currencies lead to a MoneyBag with only the 2 currencies",
+                ((MoneyBag)result).getCurrencies(), containsInAnyOrder("EUR","YEN"));
+        assertThat(((MoneyBag)result), allOf(EUR(is(14)),YEN(is(12))));
+
+
     }
 
     @Test
@@ -99,6 +106,8 @@ public class IMoneyTest {
                 () -> assertEquals("EUR",((Money)result).getCurrency()),
                 () -> assertEquals(12, ((Money)result).getAmount())
         );
+        assertThat("Add a Money with en empty Money Bag is just a Money",result, instanceOf(Money.class));
+
     }
     @Test
     public void addEmptyMoneyBagWithMoneyShouldReturnMoney() {
@@ -108,5 +117,30 @@ public class IMoneyTest {
                 () -> assertEquals("EUR",((Money)result).getCurrency()),
                 () -> assertEquals(12, ((Money)result).getAmount())
         );
+
+        assertThat("Add an empty Money Bag with a Money  is just a Money",result, instanceOf(Money.class));
+
+    }
+
+    public static Matcher<MoneyBag> EUR(Matcher<? super
+            Integer> matcher) {
+        return new FeatureMatcher<MoneyBag, Integer>(matcher,
+                "a MoneyBag with x Euros", "EUR") {
+            @Override
+            protected Integer featureValueOf(MoneyBag actual) {
+                return actual.getCurrencyAmount("EUR");
+            }
+        };
+    }
+
+    public static Matcher<MoneyBag> YEN(Matcher<? super
+            Integer> matcher) {
+        return new FeatureMatcher<MoneyBag, Integer>(matcher,
+                "a MoneyBag with x Yens", "YEN") {
+            @Override
+            protected Integer featureValueOf(MoneyBag actual) {
+                return actual.getCurrencyAmount("YEN");
+            }
+        };
     }
 }
