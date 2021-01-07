@@ -22,7 +22,7 @@ public class MoneyTest {
         Money result = eur12.add(eur14);
         assertAll("SimpleAdd",
                 () -> assertEquals("EUR",result.getCurrency()),
-                () -> assertEquals(26, result.getAmount())
+                () -> assertEquals(26.0, result.getAmount())
         );
     }
 

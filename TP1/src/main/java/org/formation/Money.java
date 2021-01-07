@@ -2,10 +2,10 @@ package org.formation;
 
 
 public class Money {
-    private int amount;
+    private double amount;
     private String currency;
 
-    public Money(int amount, String currency) {
+    public Money(double amount, String currency) {
         this.amount = amount;
         this.currency = currency;
     }
@@ -16,11 +16,11 @@ public class Money {
         }
         return new Money(amount + m.amount, getCurrency() );
     }
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 
