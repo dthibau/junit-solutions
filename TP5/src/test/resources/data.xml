@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Initialisation de 2 tables : Fourniseur et Produit -->
+<dataset>
+    <fournisseur id='1' nom='Belleville express' reference='BELLE'/>
+    <fournisseur id='2' nom='BricBrac Import/Export' reference='BRICB'/>
+    <fournisseur id='3' nom='Luxuary unlimited' reference='LUXUA'/>
+    <produit id='1' availability='1' description='bla-bla' hauteur='150' largeur='210' longueur='300' nom='Lit Tania' prix_unitaire='359.0' reference='TAN78' fournisseur_id='1'/>
+    <produit id='2' availability='1' description='bli-bli' hauteur='150' largeur='210' longueur='300' nom='Stuva Fritids' prix_unitaire='92.0' reference='STU92' fournisseur_id='2'/>
+    <produit id='3' availability='1' description='blo-blo' hauteur='150' largeur='210' longueur='300' nom='Godishus' prix_unitaire='79.95' reference='GOD79' fournisseur_id='2'/>
+</dataset>
+
+
+
