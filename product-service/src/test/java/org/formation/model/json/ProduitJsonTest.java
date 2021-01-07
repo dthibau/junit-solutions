@@ -21,7 +21,7 @@ public class ProduitJsonTest {
 	@Autowired
 	ApplicationContext context;
 	
-	@Test
+//	@Test
 	void contextLoads() {
 		Arrays.stream(context.getBeanDefinitionNames())
 		   .map(bn -> context.getBean(bn))

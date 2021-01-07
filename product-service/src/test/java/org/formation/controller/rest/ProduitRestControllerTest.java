@@ -15,6 +15,7 @@ import org.formation.model.Produit;
 import org.formation.model.ProduitRepository;
 import org.formation.service.ImportProduitService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -25,6 +26,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(value=ProduitRestController.class)
+@Tag("integration")
 public class ProduitRestControllerTest {
 
 	@Autowired
@@ -49,7 +51,7 @@ public class ProduitRestControllerTest {
 	UserDetailsService userDetailsService;
 	
 	private List<Produit> produits = new ArrayList<>();
-	@Test
+//	@Test
 	void contextLoads() {
 		Arrays.stream(context.getBeanDefinitionNames())
 		   .map(bn -> context.getBean(bn))
