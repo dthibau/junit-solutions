@@ -107,6 +107,13 @@
 
 	<build>
 		<plugins>
+		        <plugin>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>2.22.2</version>
+            <configuration>
+                <excludedGroups>integration</excludedGroups>
+            </configuration>
+        </plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -121,6 +128,9 @@
 					</execution>
 				</executions>
 			</plugin>
+
+
+
 		</plugins>
 	</build>
 
