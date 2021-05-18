@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import javax.sql.DataSource;
 
 import org.dbunit.DataSourceBasedDBTestCase;
+import org.dbunit.assertion.DbUnitAssert;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
@@ -66,7 +67,7 @@ public class DataSourceDBUnitTest extends DataSourceBasedDBTestCase {
 	    ITable expectedTable = expectedDataSet.getTable("fournisseur");
 	    IDataSet databaseDataSet = getConnection().createDataSet();
 	    ITable actualTable = databaseDataSet.getTable("fournisseur");
-	    assertEquals(expectedTable, actualTable);
+	    new DbUnitAssert().assertEquals(expectedTable, actualTable);
 	}
 	
 	@Test
