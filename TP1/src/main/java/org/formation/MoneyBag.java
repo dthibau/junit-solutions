@@ -40,7 +40,12 @@ public class MoneyBag implements IMoney {
     }
     
     public Money convertInto(String destinationCurrency) {
-    	return null;
+    	double result = getCurrencies().stream()
+    			.filter(currency -> !currency.equals(destinationCurrency) )
+                .map(currency -> convertService.convert(moneys.get(currency).getAmount(), currency, destinationCurrency))
+                .reduce(0d, (a, b) -> a + b);
+
+    	return new Money(result + getCurrencyAmount(destinationCurrency),destinationCurrency);
     }
     
     private void addMoney(Money money) {
@@ -70,6 +75,7 @@ public class MoneyBag implements IMoney {
 
 	public void setConvertService(ConvertService convertService) {
 		this.convertService = convertService;
+		
 	}
    
 }

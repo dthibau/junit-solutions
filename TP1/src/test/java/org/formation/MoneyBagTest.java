@@ -31,7 +31,7 @@ public class MoneyBagTest {
 	}
 	
 	@Test
-	public void givenMoneyBagNotContainingTarget_thenChackResultltAndVerifyTwoInteractionWithService() {
+	public void givenMoneyBagNotContainingTarget_thenCheckResultltAndVerifyTwoInteractionWithService() {
 		
 		MoneyBag mbEur12Yen14 = new MoneyBag();
 		mbEur12Yen14.put(new Money(12,"EUR"));
