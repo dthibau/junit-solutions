@@ -1,5 +1,6 @@
 package org.formation;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -28,31 +29,30 @@ public class IMoneyTest {
     @Test
     public void add2MoneyWithSameCurrency() {
         IMoney result = eur12.add(eur14);
-        assertAll("Add2MoneyWithSameCurrency",
-                () -> assertTrue( result instanceof Money),
-                () -> assertEquals("EUR",((Money)result).getCurrency()),
-                () -> assertEquals(26, ((Money)result).getAmount())
-        );
+        assertThat(result).as("Check IMoney Type and result").isExactlyInstanceOf(Money.class)
+        				.extracting("currency","amount")
+        				.containsExactly("EUR",25);
+        
+        
     }
 
     @Test
     public void add2MoneyWithDifferentCurrency() {
         IMoney result = eur14.add(yen12);
-        assertAll("Add2MoneyWithDifferentCurrency",
-                () -> assertTrue( result instanceof MoneyBag),
-                () -> assertEquals(14,((MoneyBag)result).getCurrencyAmount("EUR")),
-                () -> assertEquals(12, ((MoneyBag)result).getCurrencyAmount("YEN"))
-        );
+        assertThat(result).as("Check IMoney Type and result").isExactlyInstanceOf(MoneyBag.class)
+        				.extracting(r -> ((MoneyBag) r).getCurrencyAmount("EUR"), r -> ((MoneyBag) r).getCurrencyAmount("YEN"))
+        				.containsExactly(14.0, 12.0);        
+        assertThat(((MoneyBag)result).getCurrencies()).containsExactly("EUR","YEN");
+        			
     }
 
     @Test
     public void addMoneyWithMoneyBagNotContainingCurrency() {
         IMoney result = mb12Eur.add(yen12);
-        assertAll("addMoneyWithMoneyBagNotContainingCurrency",
-                () -> assertTrue( result instanceof MoneyBag),
-                () -> assertEquals(12,((MoneyBag)result).getCurrencyAmount("EUR")),
-                () -> assertEquals(12, ((MoneyBag)result).getCurrencyAmount("YEN"))
-        );
+        
+        assertThat(result).as("Check MoneyBag Type and result").isExactlyInstanceOf(MoneyBag.class)
+		.extracting(r -> ((MoneyBag) r).getCurrencyAmount("EUR"), r -> ((MoneyBag) r).getCurrencyAmount("YEN"))
+		.containsExactly(12.0, 12.0);
     }
     @Test
     public void addMoneyBagWithMoneyNotContainingCurrency() {
@@ -82,9 +82,9 @@ public class IMoneyTest {
         );
     }
     @Test
-    public void add2MoneyBag() {
+    public void addMoneyBagWithMoneyBagContainingSameCurrencies() {
         IMoney result = mbb14Eur12Yen.add(mbb14Eur12Yen);
-        assertAll("addMoneyWithMoneyBagNotContainingCurrency",
+        assertAll("addMoneyBagWithMoneyBagContainingSameCurrencies",
                 () -> assertTrue( result instanceof MoneyBag),
                 () -> assertEquals(28,((MoneyBag)result).getCurrencyAmount("EUR")),
                 () -> assertEquals(24, ((MoneyBag)result).getCurrencyAmount("YEN"))

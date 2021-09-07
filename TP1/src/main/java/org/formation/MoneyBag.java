@@ -16,9 +16,26 @@ public class MoneyBag implements IMoney {
        Money money = moneys.get(currency);
        return money != null ? money.getAmount() : 0;
     }
+    
     public Set<String> getCurrencies() {
         return moneys.keySet();
     }
+    
+    @Override
+    public IMoney add(IMoney imoney) {
+      if ( imoney instanceof Money ) {
+          Money m = (Money)imoney;
+          addMoney(m);
+          return this.normalize();
+      } else if (imoney instanceof MoneyBag) {
+          MoneyBag mb = (MoneyBag) imoney;
+          mb.getCurrencies().stream().forEach(currency -> addMoney(mb.getCurrencyAmount(currency), currency));
+        return  this.normalize();
+      }
+      throw new IllegalArgumentException("Not implemented");
+
+    }
+    
     private void addMoney(Money money) {
         if (moneys.containsKey(money.getCurrency()) ) {
             moneys.put(money.getCurrency(), (Money)moneys.get(money.getCurrency()).add(money));
@@ -39,18 +56,5 @@ public class MoneyBag implements IMoney {
         }
         return this;
     }
-    @Override
-    public IMoney add(IMoney imoney) {
-      if ( imoney instanceof Money ) {
-          Money m = (Money)imoney;
-          addMoney(m);
-          return this.normalize();
-      } else if (imoney instanceof MoneyBag) {
-          MoneyBag mb = (MoneyBag) imoney;
-          mb.getCurrencies().stream().forEach(currency -> addMoney(mb.getCurrencyAmount(currency), currency));
-        return  this.normalize();
-      }
-      throw new IllegalArgumentException("Not implemented");
-
-    }
+   
 }
