@@ -6,6 +6,9 @@ import java.util.stream.Collectors;
 public class MoneyBag implements IMoney {
 
     private Map<String,Money> moneys = new HashMap<>();
+    
+    private ConvertService convertService;
+    
 
 
     public void put(Money money) {
@@ -36,6 +39,10 @@ public class MoneyBag implements IMoney {
 
     }
     
+    public Money convertInto(String destinationCurrency) {
+    	return null;
+    }
+    
     private void addMoney(Money money) {
         if (moneys.containsKey(money.getCurrency()) ) {
             moneys.put(money.getCurrency(), (Money)moneys.get(money.getCurrency()).add(money));
@@ -56,5 +63,13 @@ public class MoneyBag implements IMoney {
         }
         return this;
     }
+
+	public ConvertService getConvertService() {
+		return convertService;
+	}
+
+	public void setConvertService(ConvertService convertService) {
+		this.convertService = convertService;
+	}
    
 }
