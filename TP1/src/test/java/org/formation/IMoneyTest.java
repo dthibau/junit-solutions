@@ -1,7 +1,12 @@
 package org.formation;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+
+import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -34,24 +39,54 @@ public class IMoneyTest {
 	public void add2MoneyWithSameCurrencyThenMoney() {
 		IMoney result = eur12.add(eur10);
 		
-		assertTrue("add2MoneyWithSameCurrencyThenMoney",result instanceof Money);
-		assertEquals("add2MoneyWithSameCurrencyThenMoney - Check Amount",22,((Money)result).getAmount(),0);
+		assertThat(result).isExactlyInstanceOf(Money.class)
+		               .extracting(m -> ((Money)m).getAmount())
+		               .isEqualTo(22.0);
+		
 	}
 	
 	@Test
 	public void add2MoneyWithDifferentCurrencyThenMoneyBag() {
 		IMoney result = eur12.add(usd10);
 		
-		assertTrue("add2MoneyWithSameCurrencyThenMoney",result instanceof MoneyBag);
-		assertEquals("add2MoneyWithDifferentCurrencyThenMoneyBag - Check Amount",12,((MoneyBag)result).get("EUR"),0);
-		assertEquals("add2MoneyWithDifferentCurrencyThenMoneyBag - Check Amount",10,((MoneyBag)result).get("USD"),0);
-		
+		assertThat(result)
+	    .as("Check IMoney Type and result")
+	    .isInstanceOf(MoneyBag.class)
+	    .extracting(
+	        r -> ((MoneyBag) r).get("EUR"),
+	        r -> ((MoneyBag) r).get("USD"),
+	        r -> List.copyOf(((MoneyBag) r).getCurrencies())
+	    )
+	    .usingRecursiveComparison()   // <--- comparaison sur le contenu
+	    .isEqualTo(Arrays.asList(
+	        12.0,
+	        10.0,
+	        Arrays.asList("EUR", "USD")
+	    ));
 
 	}
 	
 	@Test
 	public void addMoneyWithMoneyBagNotContainingCurrencyThenCheckNewCurrency() {
 		IMoney result = yen10.add(mbEur12Usd10);
+		
+		assertThat(result)
+	    .as("Check IMoney Type and result")
+	    .isInstanceOf(MoneyBag.class)
+	    .extracting(
+	        r -> ((MoneyBag) r).get("EUR"),
+	        r -> ((MoneyBag) r).get("USD"),
+	        r -> ((MoneyBag) r).get("YEN"),
+	        r -> ((MoneyBag) r).getCurrencies().stream().sorted().toList()
+	    )
+	    .usingRecursiveComparison() // <--- comparaison sur le contenu
+	    .ignoringCollectionOrder()
+	    .isEqualTo(Arrays.asList(
+	        12.0,
+	        10.0,
+	        10.0,
+	        Arrays.asList("EUR", "USD","YEN")
+	    ));
 		
 		assertTrue("add2MoneyWithSameCurrencyThenMoney",result instanceof MoneyBag);
 		assertEquals("add2MoneyWithDifferentCurrencyThenMoneyBag - Check Amount",12,((MoneyBag)result).get("EUR"),0);
