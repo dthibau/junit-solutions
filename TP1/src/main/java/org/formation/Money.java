@@ -1,7 +1,7 @@
 package org.formation;
 
 
-public class Money {
+public class Money implements IMoney {
     private double amount;
     private String currency;
 
@@ -10,16 +10,26 @@ public class Money {
         this.currency = currency;
     }
 
-    public Money add(Money m) {
+	@Override
+	public IMoney add(IMoney iMoney) {
+		if ( iMoney instanceof MoneyBag ) {
+			return iMoney.add(this);
+		} else {
+			return addMoney((Money)iMoney);
+		}	
+	}
+	
+    private IMoney addMoney(Money m) {
         if ( m == null ) {
             return new Money(amount,currency); // Retourne une copie
         }
 
     	if ( !getCurrency().equals(m.getCurrency()) ) {
-            throw new IllegalArgumentException("Can't add money with different currencies");
+            return new MoneyBag(this,m);
         }
         return new Money(amount + m.amount, getCurrency() );
     }
+    
     public double getAmount() {
         return amount;
     }
@@ -44,5 +54,7 @@ public class Money {
         }
         return false;
     }
+
+
 
 }
