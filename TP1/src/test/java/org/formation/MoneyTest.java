@@ -1,45 +1,42 @@
 package org.formation;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
+import org.junit.Test;
 
 public class MoneyTest {
 
-    private Money eur12,eur14,yen12;
+	Money eur12 = new Money(12,"EUR");
+	Money eur14 = new Money(14,"EUR");
+	Money usd10 = new Money(10,"USD");
+	
+	
 
-    @BeforeEach
-    public void setUp() throws Exception {
-        eur12 = new Money(12,"EUR");
-        eur14 = new Money(14,"EUR");
-        yen12 = new Money(12,"YEN");
-    }
+	@Test
+	public void whenAddWithSameCurrencyCheckSum() {
+	
+		Money result = eur12.add(eur14);
+		assertEquals("Check amount",26,result.getAmount(),0);
+		assertEquals("Check currency","EUR",result.getCurrency());
+	}
 
-    @Test
-    public void addWithSameCurrency() {
-        Money result = eur12.add(eur14);
-        assertAll("SimpleAdd",
-                () -> assertEquals("EUR",result.getCurrency()),
-                () -> assertEquals(26.0, result.getAmount())
-        );
-    }
+	@Test
+	public void whenAddWithNullCheckUnchanged() {
+		Money result = eur12.add(null);
+		assertEquals("Check amount",12,result.getAmount(),0);
+		assertEquals("Check currency","EUR",result.getCurrency());
+	}
+	
+	@Test
+	public void whenAddWithDifferentCurrencyCheckIllegalArgumentException() {
+		
+		try {
+			eur12.add(usd10);
+			fail("Exception not thrown");
+		} catch (IllegalArgumentException e) {}
+		
+		
+	}
 
-    @Test
-    public void addWithDifferentCurrencyShouldThrowException() {
-        Throwable exception =
-                assertThrows(IllegalArgumentException.class,
-                        () -> { eur12.add(yen12);});
-    }
-
-    @Test
-    public void testEquals() {
-        Money eur12Bis = new Money(12, "EUR");
-        assertAll("Equals",
-                () -> assertEquals(eur12Bis,eur12),
-                () -> assertEquals(eur12,eur12),
-                () -> assertNotEquals(eur12,yen12)
-        );
-    }
 }

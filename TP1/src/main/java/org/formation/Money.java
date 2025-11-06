@@ -11,7 +11,11 @@ public class Money {
     }
 
     public Money add(Money m) {
-        if ( !getCurrency().equals(m.getCurrency()) ) {
+        if ( m == null ) {
+            return new Money(amount,currency); // Retourne une copie
+        }
+
+    	if ( !getCurrency().equals(m.getCurrency()) ) {
             throw new IllegalArgumentException("Can't add money with different currencies");
         }
         return new Money(amount + m.amount, getCurrency() );
