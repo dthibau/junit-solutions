@@ -83,4 +83,12 @@ public class MoneyBag implements IMoney {
 		return moneys.keySet();
 	}
 
+	public ConvertService getConvertService() {
+		return convertService;
+	}
+
+	public void setConvertService(ConvertService convertService) {
+		this.convertService = convertService;
+	}
+
 }
