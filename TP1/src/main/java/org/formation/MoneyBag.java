@@ -7,6 +7,8 @@ import java.util.Map;
 public class MoneyBag implements IMoney {
 	
 	Map<String,Money> moneys = new HashMap<>();
+	
+	private ConvertService convertService;
 
 	public MoneyBag(Money... array) {
 		for ( Money money : array ) {
@@ -33,7 +35,12 @@ public class MoneyBag implements IMoney {
 	}
 	
 	public Money convertInto(String destinationCurrency) {
-		return null;
+		
+		double result = getCurrencies().stream()
+				 			.filter(currency -> !currency.equals(destinationCurrency) )
+				            .map(currency -> convertService.convert(moneys.get(currency).getAmount(), currency, destinationCurrency))
+				            .reduce(0d, (a, b) -> a + b);
+		return new Money(result + get(destinationCurrency),destinationCurrency);
 	}
 	
 	private IMoney normalize(MoneyBag ret) {
