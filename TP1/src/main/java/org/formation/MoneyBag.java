@@ -32,6 +32,10 @@ public class MoneyBag implements IMoney {
 		return normalize(ret);
 	}
 	
+	public Money convertInto(String destinationCurrency) {
+		return null;
+	}
+	
 	private IMoney normalize(MoneyBag ret) {
 		if ( ret.getCurrencies().size() == 1 ) {
 			return ret.getMoneys().iterator().next();
